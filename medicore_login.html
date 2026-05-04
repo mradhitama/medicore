@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pearl Dental System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .login-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-group:focus-within label {
+            color: #1d4ed8;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+        }
+
+        .input-field:focus {
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-5xl w-full flex bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px]">
+        
+        <!-- LEFT SIDE: BRANDING/ILLUSTRATION -->
+        <div class="hidden lg:flex lg:w-1/2 login-gradient p-12 flex-col justify-between relative">
+            <!-- Decor -->
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <i class="fas fa-tooth text-[200px] text-white rotate-12"></i>
+            </div>
+
+            <div class="relative z-10">
+                <div class="flex items-center space-x-3 mb-12">
+                    <div class="bg-blue-600 p-2 rounded-lg text-white">
+                        <i class="fas fa-tooth text-2xl"></i>
+                    </div>
+                    <span class="text-white font-extrabold text-2xl tracking-tight">Pearl Dental</span>
+                </div>
+                
+                <h1 class="text-4xl font-black text-white leading-tight mb-4">
+                    Management System <br>
+                    <span class="text-blue-400">Simplified.</span>
+                </h1>
+                <p class="text-slate-400 font-medium max-w-md">
+                    Kelola janji temu, inventaris obat, dan laporan keuangan klinik dalam satu dashboard terintegrasi.
+                </p>
+            </div>
+
+            <div class="relative z-10">
+                <div class="flex -space-x-3 mb-4">
+                    <img src="https://ui-avatars.com/api/?name=Dr+Hendra&background=DBEAFE&color=1E40AF" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                    <img src="https://ui-avatars.com/api/?name=Dr+Siska&background=FCE7F3&color=9D174D" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=F1F5F9&color=475569" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                </div>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Trusted by 10+ Medical Staff</p>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: LOGIN FORM -->
+        <div class="w-full lg:w-1/2 p-8 md:p-16 flex flex-col justify-center">
+            <div class="mb-10">
+                <h2 class="text-3xl font-black text-slate-900 mb-2">Welcome Back</h2>
+                <p class="text-slate-500 font-medium">Silakan masuk ke akun admin Anda.</p>
+            </div>
+
+            <form action="#" class="space-y-6">
+                <!-- Email Field -->
+                <div class="input-group">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Username</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                            <i class="far fa-envelope"></i>
+                        </span>
+                        <input type="text" 
+                               placeholder="admin" 
+                               class="input-field w-full pl-12 pr-4 py-3.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50">
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="input-group">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password</label>
+                        <a href="#" class="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">Forgot?</a>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" 
+                               placeholder="••••••••" 
+                               class="input-field w-full pl-12 pr-4 py-3.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50">
+                        <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                    <label for="remember" class="ml-2 text-xs font-bold text-slate-600">Ingat perangkat ini</label>
+                </div>
+
+                <!-- Login Button -->
+                <a href="medicore_dashboard.html" class="block text-center w-full bg-blue-700 text-white py-4 rounded-xl font-black shadow-xl shadow-blue-200 hover:bg-blue-800 hover:transform hover:-translate-y-0.5 transition-all duration-200">
+                    Login to Dashboard
+                </a>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-12 pt-8 border-t border-slate-100 text-center">
+                <p class="text-xs text-slate-400 font-medium">
+                    Butuh bantuan akses? <a href="#" class="text-blue-600 font-bold hover:underline">Hubungi IT Support</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

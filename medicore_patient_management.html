@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management - Pearl Dental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .sidebar-item { border-radius: 8px; transition: all 0.2s; color: #94a3b8; }
+        .sidebar-item:hover, .sidebar-item.active { background-color: #1e293b; color: white; }
+        .card { background: white; border-radius: 12px; border: 2px solid #e2e8f0; }
+        .patient-row:hover { background-color: #f1f5f9; cursor: pointer; }
+        .patient-row.active { border-left: 4px solid #1d4ed8; background-color: #eff6ff; }
+        .badge-allergy { background-color: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
+        .text-label { color: #64748b; font-weight: 700; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        /* Modal Styling */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: rgba(0,0,0,0.6); 
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content { 
+            background: white; 
+            border-radius: 16px; 
+            width: 90%; 
+            max-width: 550px; 
+            max-height: 85vh; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+        .modal-content > form {
+            overflow-y: auto;
+        }
+        @keyframes slideIn { 
+            from { 
+                transform: translateY(-20px) scale(0.95); 
+                opacity: 0; 
+            } 
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        .form-input { 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            border-radius: 10px; 
+            border: 2px solid #e2e8f0; 
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .form-input:focus { border-color: #1d4ed8; background-color: #fff; }
+        .form-label { 
+            display: block; 
+            font-size: 0.7rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: #64748b; 
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.025em;
+        }
+        .section-card { background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; padding: 1.5rem; }
+    </style>
+</head>
+<body class="flex">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-slate-950 min-h-screen p-6 flex flex-col sticky top-0 h-screen">
+        <div class="flex items-center space-x-3 mb-10 px-2">
+            <div class="bg-blue-600 p-2 rounded-lg text-white">
+                <i class="fas fa-tooth text-xl"></i>
+            </div>
+            <span class="text-white font-extrabold text-lg tracking-tight">Pearl Dental</span>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2">Main Menu</p>
+            <a href="medicore_dashboard.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-th-large mr-3 w-5"></i> Dashboard
+            </a>
+            <a href="medicore_patient_management.html" class="sidebar-item active flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-users mr-3 w-5"></i> Patient Data
+            </a>
+            <a href="medicore_appointmenty.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-calendar-check mr-3 w-5"></i> Appointments
+            </a>
+            <a href="medicore_service_inventory_management.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-boxes mr-3 w-5"></i> Inventory Mgmt
+            </a>
+            <a href="medicore_billing_finance.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-file-invoice-dollar mr-3 w-5"></i> Billing & Finance
+            </a>
+            <a href="medicore_doctor_consuler.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-user-md mr-3 w-5"></i> Doctor Console
+            </a>
+            <a href="medicore_staff_management.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-users mr-3 w-5"></i> Staff Management
+            </a>
+            <a href="medicore_attendance.html" class="sidebar-item flex items-center p-3 text-sm font-semibold">
+                <i class="fas fa-clock mr-3 w-5"></i> Attendance
+            </a>
+        </nav>
+
+        <div class="pt-6 border-t border-slate-800">
+            <a href="medicore_login.html" class="sidebar-item flex items-center p-3 text-sm font-semibold text-rose-400">
+                <i class="fas fa-sign-out-alt mr-3 w-5"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
+            <h1 class="text-xl font-extrabold text-slate-800">Patient Data Management</h1>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" placeholder="Search patient name or ID..." class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <button onclick="openAddPatientModal()" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-800 transition">
+                    <i class="fas fa-plus mr-2"></i> Add New Patient
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- LEFT: Patient List -->
+            <section class="w-1/3 border-r border-slate-200 bg-white overflow-y-auto">
+                <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                    <p class="text-label">Total Patients: 1,240</p>
+                </div>
+                
+                <!-- Patient Item 1 (Active) -->
+                <div class="patient-row active p-4 border-b border-slate-100">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-slate-900">Sarah Connor</h3>
+                        <span class="text-[10px] text-slate-400 font-bold">#P-00124</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-2">Terakhir Kunjungan: 2 Mei 2026</p>
+                    <div class="flex space-x-2">
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold badge-allergy">ALERGI: PENICILLIN</span>
+                    </div>
+                </div>
+
+                <!-- Patient Item 2 -->
+                <div class="patient-row p-4 border-b border-slate-100">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-slate-900">John Wick</h3>
+                        <span class="text-[10px] text-slate-400 font-bold">#P-00125</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-2">Terakhir Kunjungan: 15 April 2026</p>
+                    <div class="flex space-x-2">
+                        <span class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[9px] font-bold">NO ALLERGIES</span>
+                    </div>
+                </div>
+
+                <!-- Patient Item 3 -->
+                <div class="patient-row p-4 border-b border-slate-100">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-slate-900">Arthur Fleck</h3>
+                        <span class="text-[10px] text-slate-400 font-bold">#P-00126</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-2">Terakhir Kunjungan: 10 Maret 2026</p>
+                </div>
+            </section>
+
+            <!-- RIGHT: Patient Detail -->
+            <section class="flex-1 bg-[#f8fafc] overflow-y-auto p-8">
+                
+                <!-- Profile Summary Card -->
+                <div class="card p-6 mb-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center space-x-5">
+                            <div class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-700 text-3xl font-black border-4 border-white shadow-sm">
+                                SC
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-900">Sarah Connor</h2>
+                                <p class="text-sm text-slate-500 font-medium italic">"Pasien rutin sejak 2023 - Orthodontic Treatment"</p>
+                                <div class="flex mt-3 space-x-4">
+                                    <div class="flex items-center text-xs font-bold text-slate-600">
+                                        <i class="fas fa-phone-alt mr-2 text-blue-500"></i> +62 812-3456-7890
+                                    </div>
+                                    <div class="flex items-center text-xs font-bold text-slate-600">
+                                        <i class="fas fa-envelope mr-2 text-blue-500"></i> sarah.c@gmail.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button class="text-slate-400 hover:text-slate-600"><i class="fas fa-edit mr-1"></i> Edit Profile</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mt-8 pt-6 border-t border-slate-100">
+                        <div>
+                            <p class="text-label">Identitas & Personal</p>
+                            <div class="mt-2 space-y-1 text-sm">
+                                <p class="flex justify-between"><span class="text-slate-400">Tgl Lahir:</span> <span class="font-bold">12 Mei 1995 (31 thn)</span></p>
+                                <p class="flex justify-between"><span class="text-slate-400">Gender:</span> <span class="font-bold">Perempuan</span></p>
+                                <p class="flex justify-between"><span class="text-slate-400">Pekerjaan:</span> <span class="font-bold">Software Engineer</span></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-label">Kondisi Medis</p>
+                            <div class="mt-2 space-y-1 text-sm">
+                                <p class="flex justify-between"><span class="text-slate-400">Gol. Darah:</span> <span class="font-bold">O-</span></p>
+                                <p class="flex justify-between"><span class="text-slate-400">Tekanan Darah:</span> <span class="font-bold text-emerald-600">120/80 (Normal)</span></p>
+                                <p class="flex justify-between"><span class="text-slate-400">Riwayat Penyakit:</span> <span class="font-bold">Tidak ada</span></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-label text-rose-600">Peringatan Alergi</p>
+                            <div class="mt-2 p-3 rounded-lg bg-rose-50 border border-rose-100">
+                                <p class="text-xs font-black text-rose-700 uppercase tracking-tighter"><i class="fas fa-exclamation-triangle mr-1"></i> Penicillin High Risk</p>
+                                <p class="text-[11px] text-rose-600 mt-1">Hindari pemberian antibiotik golongan beta-laktam.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Medical Records / Tindakan -->
+                    <div class="card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-extrabold text-slate-800">Riwayat Tindakan Gigi</h3>
+                            <button class="text-blue-600 text-xs font-bold uppercase tracking-widest">Odontogram <i class="fas fa-external-link-alt ml-1"></i></button>
+                        </div>
+                        <div class="relative border-l-2 border-slate-100 ml-2 space-y-8">
+                            <!-- Tindakan 1 -->
+                            <div class="relative pl-8">
+                                <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-[9px] top-1 border-4 border-white shadow-sm"></div>
+                                <p class="text-[10px] font-bold text-slate-400">2 MEI 2026</p>
+                                <h4 class="text-sm font-bold text-slate-800">Root Canal Treatment (Gigi 24)</h4>
+                                <p class="text-xs text-slate-500 mt-1">Pembersihan saluran akar tahap 1. Pemberian kalsium hidroksida.</p>
+                                <p class="text-xs font-bold text-blue-700 mt-2">Dr. Hendra W.</p>
+                            </div>
+                            <!-- Tindakan 2 -->
+                            <div class="relative pl-8">
+                                <div class="absolute w-4 h-4 bg-slate-300 rounded-full -left-[9px] top-1 border-4 border-white shadow-sm"></div>
+                                <p class="text-[10px] font-bold text-slate-400">14 MARET 2026</p>
+                                <h4 class="text-sm font-bold text-slate-800">Scaling & Polishing</h4>
+                                <p class="text-xs text-slate-500 mt-1">Pembersihan karang gigi seluruh regio. Gusi sedikit berdarah di anterior bawah.</p>
+                                <p class="text-xs font-bold text-blue-700 mt-2">Dr. Siska Amalia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visit History -->
+                    <div class="card p-6">
+                        <h3 class="font-extrabold text-slate-800 mb-6">Riwayat Kunjungan</h3>
+                        <div class="overflow-hidden rounded-xl border border-slate-100">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50">
+                                    <tr class="text-[10px] text-slate-400 uppercase tracking-widest">
+                                        <th class="p-3">Tanggal</th>
+                                        <th class="p-3">Keperluan</th>
+                                        <th class="p-3">Biaya</th>
+                                        <th class="p-3">Nota</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-xs font-bold">
+                                    <tr class="border-b border-slate-50">
+                                        <td class="p-3 text-slate-600">02/05/26</td>
+                                        <td class="p-3 text-slate-800">Tindakan</td>
+                                        <td class="p-3">Rp 2.800k</td>
+                                        <td class="p-3 text-blue-600"><i class="fas fa-file-pdf text-lg"></i></td>
+                                    </tr>
+                                    <tr class="border-b border-slate-50">
+                                        <td class="p-3 text-slate-600">14/03/26</td>
+                                        <td class="p-3 text-slate-800">Scaling</td>
+                                        <td class="p-3">Rp 450k</td>
+                                        <td class="p-3 text-blue-600"><i class="fas fa-file-pdf text-lg"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 text-slate-600">10/01/26</td>
+                                        <td class="p-3 text-slate-800">Konsultasi</td>
+                                        <td class="p-3 text-emerald-600">FREE</td>
+                                        <td class="p-3 text-blue-600"><i class="fas fa-file-pdf text-lg"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 rounded-xl text-[10px] font-bold text-slate-400 hover:bg-slate-50 transition uppercase tracking-widest">
+                            Lihat Semua Riwayat (12 Kunjungan)
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- ADD NEW PATIENT MODAL -->
+    <div id="addPatientModal" class="modal-overlay">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
+                <h2 class="text-xl font-black text-slate-900">Add New Patient</h2>
+                <button onclick="closeAddPatientModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <form class="p-6 space-y-6">
+                <!-- SECTION 1: PERSONAL INFORMATION -->
+                <div class="section-card">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xs">1</div>
+                        <h3 class="text-base font-bold text-slate-800">Personal Information</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="form-label">Full Name (Sesuai KTP)</label>
+                            <input type="text" class="form-input" placeholder="e.g. Sarah Connor">
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Place of Birth</label>
+                            <input type="text" class="form-input" placeholder="Jakarta">
+                        </div>
+                        
+                        <div>
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-input">
+                        </div>
+
+                        <div>
+                            <label class="form-label">Gender</label>
+                            <div class="flex space-x-2">
+                                <label class="flex items-center p-2 border-2 border-slate-100 rounded-lg flex-1 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="gender" class="w-4 h-4 text-blue-600">
+                                    <span class="ml-2 text-xs font-bold text-slate-700">Male</span>
+                                </label>
+                                <label class="flex items-center p-2 border-2 border-slate-100 rounded-lg flex-1 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="gender" class="w-4 h-4 text-blue-600">
+                                    <span class="ml-2 text-xs font-bold text-slate-700">Female</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label">Occupation</label>
+                            <input type="text" class="form-input" placeholder="e.g. Software Engineer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: MEDICAL HISTORY -->
+                <div class="section-card">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-6 h-6 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-xs">2</div>
+                        <h3 class="text-base font-bold text-slate-800">Medical History</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="form-label">Blood Type</label>
+                            <select class="form-input">
+                                <option>A</option>
+                                <option>B</option>
+                                <option>AB</option>
+                                <option>O</option>
+                                <option>Unknown</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="form-label">Allergy Awareness</label>
+                            <input type="text" class="form-input" placeholder="e.g. Penicillin, Seafood, etc.">
+                        </div>
+
+                        <div>
+                            <label class="form-label">General Health Notes</label>
+                            <textarea class="form-input" rows="2" placeholder="Sebutkan riwayat penyakit kronis jika ada..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: CONTACT & ADDRESS -->
+                <div class="section-card">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs">3</div>
+                        <h3 class="text-base font-bold text-slate-800">Contact & Address</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="form-label">WhatsApp Number</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">+62</span>
+                                <input type="tel" class="form-input pl-14" placeholder="812xxxxxxx">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" placeholder="name@email.com">
+                        </div>
+
+                        <div>
+                            <label class="form-label">Home Address</label>
+                            <textarea class="form-input" rows="2" placeholder="Alamat lengkap tempat tinggal..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
+                    <button type="button" onclick="closeAddPatientModal()" class="px-6 py-2 rounded-lg font-bold text-slate-500 hover:bg-slate-100 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-8 py-2 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 transition">
+                        Save Patient <i class="fas fa-save ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function openAddPatientModal() {
+            document.getElementById('addPatientModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddPatientModal() {
+            document.getElementById('addPatientModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('addPatientModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddPatientModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAddPatientModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
